@@ -1,13 +1,13 @@
 package com.codepath.apps.simpletwitterclient;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.codepath.apps.simpletwitterclient.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -18,56 +18,66 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class TimeLineActivity extends ActionBarActivity {
+public class TimeLineActivity extends ActionBarActivity implements TweetDialogFragment.ComposeTweetDialogListener {
 
     private TwitterClient client;
     private TweetsArrayAdapter tweetsArrayAdapter;
     private ArrayList<Tweet> tweets;
     private ListView lvTweets;
-    private Button testTweetButton;
-    private int currentPage;
+    private SwipeRefreshLayout swipeContainer;
+    private int mCurrentPage;
+    private TweetDialogFragment mComposeDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_line);
-        currentPage = 1;
+        mCurrentPage = 1;
         lvTweets = (ListView) findViewById(R.id.lv_tweets);
-        testTweetButton = (Button) findViewById(R.id.test_button);
         tweets = new ArrayList<>();
         tweetsArrayAdapter = new TweetsArrayAdapter(this, tweets);
         lvTweets.setAdapter(tweetsArrayAdapter);
         client = TwitterApplication.getRestClient();
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                tweetsArrayAdapter.clear();
+                populateTimeLine(0);
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
         lvTweets.setOnScrollListener(new EndlessScrollListener() {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
                 customLoadMoreDataFromApi(page);
             }
         });
-        populateTimeLine();
-        setUpTestTweet();
+        populateTimeLine(0);
     }
 
     public void customLoadMoreDataFromApi(int offset) {
+        mCurrentPage = offset + 1;
+        populateTimeLine(offset);
 
     }
 
-    private void setUpTestTweet() {
-        testTweetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createTweet((String) testTweetButton.getText());
-            }
-        });
-    }
-
-    private void populateTimeLine() {
-        client.getHomeTimeline(currentPage, new JsonHttpResponseHandler() {
+    private void populateTimeLine(int page) {
+        client.getHomeTimeline(page, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
                 Log.d("Debug", response.toString());
                 tweetsArrayAdapter.addAll(Tweet.fromJSONArray(response));
+                swipeContainer.setRefreshing(false);
             }
 
             @Override
@@ -76,7 +86,6 @@ public class TimeLineActivity extends ActionBarActivity {
             }
         });
     }
-
 
 
     private void createTweet(String tweetText) {
@@ -103,6 +112,17 @@ public class TimeLineActivity extends ActionBarActivity {
     }
 
     @Override
+    public void onFinishEditDialog(String inputText) {
+        if (inputText.equals("")) {
+            Toast.makeText(this, getResources().getString(R.string.edit_empty_string_error), Toast.LENGTH_SHORT).show();
+        } else {
+            createTweet(inputText);
+            tweetsArrayAdapter.clear();
+            populateTimeLine(0);
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -110,10 +130,16 @@ public class TimeLineActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_compose) {
+            showComposeDialog();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showComposeDialog() {
+        mComposeDialog = TweetDialogFragment.newInstance(getResources().getString(R.string.compose));
+        mComposeDialog.show(getSupportFragmentManager(), "fragment_compose_tweet");
     }
 }

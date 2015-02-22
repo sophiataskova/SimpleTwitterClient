@@ -21,6 +21,8 @@
         android:id="@+id/body"
         android:layout_toRightOf="@+id/profile_photo"
         android:layout_alignBottom="@id/profile_photo"
+        android:autoLink="all"
+        android:linksClickable="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text = "Text"/>
