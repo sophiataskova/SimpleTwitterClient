@@ -25,7 +25,7 @@ public class Tweet {
             tweet.body = jsonObject.getString("text");
             tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
             tweet.uid = jsonObject.getLong("id");
-            tweet.createdAt = jsonObject.getString("created_at");
+            tweet.createdAt = getRelativeTimeAgo(jsonObject.getString("created_at"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -64,7 +64,8 @@ public class Tweet {
         }
         return tweets;
     }
-    public String getRelativeTimeAgo(String rawJsonDate) {
+
+    public static String getRelativeTimeAgo(String rawJsonDate) {
         String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
         SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
         sf.setLenient(true);

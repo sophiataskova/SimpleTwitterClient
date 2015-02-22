@@ -24,5 +24,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text = "Text"/>
+    <TextView
+        android:id="@+id/time_stamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/profile_photo"
+        android:layout_alignParentRight="true"
+        android:text="2h ago"/>
 
 </RelativeLayout>

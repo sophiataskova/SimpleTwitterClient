@@ -30,10 +30,12 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         ImageView profilePic = (ImageView) convertView.findViewById(R.id.profile_photo);
         TextView userName = (TextView) convertView.findViewById(R.id.user);
         TextView body = (TextView) convertView.findViewById(R.id.body);
+        TextView timeStamp = (TextView) convertView.findViewById(R.id.time_stamp);
 
         userName.setText(tweet.getUser().getScreenName());
         body.setText(tweet.getBody());
         profilePic.setImageResource(android.R.color.transparent);
+        timeStamp.setText(tweet.getCreatedAt());
         Picasso.with(getContext()).load(tweet.getUser().getProfilePicUrl()).into(profilePic);
 
         return convertView;
