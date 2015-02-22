@@ -25,19 +25,31 @@ public class TimeLineActivity extends ActionBarActivity {
     private ArrayList<Tweet> tweets;
     private ListView lvTweets;
     private Button testTweetButton;
+    private int currentPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_line);
+        currentPage = 1;
         lvTweets = (ListView) findViewById(R.id.lv_tweets);
         testTweetButton = (Button) findViewById(R.id.test_button);
         tweets = new ArrayList<>();
         tweetsArrayAdapter = new TweetsArrayAdapter(this, tweets);
         lvTweets.setAdapter(tweetsArrayAdapter);
         client = TwitterApplication.getRestClient();
+        lvTweets.setOnScrollListener(new EndlessScrollListener() {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                customLoadMoreDataFromApi(page);
+            }
+        });
         populateTimeLine();
         setUpTestTweet();
+    }
+
+    public void customLoadMoreDataFromApi(int offset) {
+
     }
 
     private void setUpTestTweet() {
@@ -50,7 +62,7 @@ public class TimeLineActivity extends ActionBarActivity {
     }
 
     private void populateTimeLine() {
-        client.getHomeTimeline(1, new JsonHttpResponseHandler() {
+        client.getHomeTimeline(currentPage, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
@@ -64,6 +76,8 @@ public class TimeLineActivity extends ActionBarActivity {
             }
         });
     }
+
+
 
     private void createTweet(String tweetText) {
         client.composeTweet(tweetText, new JsonHttpResponseHandler() {
