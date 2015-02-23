@@ -22,9 +22,11 @@ User can then enter a new tweet and post this to twitter
 
 User is taken back to home timeline with new tweet visible in timeline
 
-To be continued...
-Persisting tweets locally
-Replying to tweets
+See gif of current behavior at ![walkthrough](https://s3.amazonaws.com/uploads.hipchat.com/20599/752135/xeS2njM42ZLqXJ1/twitter_client.gif)
 
-Also TBD gif of app behavior (just got rate-limited by twitter and can't demo)
+### To be continued...
+
+Persisting tweets locally
+
+Replying to tweets
 
