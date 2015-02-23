@@ -13,7 +13,7 @@ public class Item extends Model {
     @Column(name = "remote_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     public long remoteId;
     // This is a regular field
-    @Column(name = "Name")
+    @Column(name = "Name", index = true)
     public String name;
 //    @Column(name = "ScreenName")
 //    public String screenName;
@@ -29,7 +29,7 @@ public class Item extends Model {
 //    public long localUId;
 
     // This is an association to another activeandroid model
-    @Column(name = "Category", onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE)
+    @Column(name = "Category", onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE, index = true)
     public Category category;
 
     // Make sure to have a default constructor for every ActiveAndroid model

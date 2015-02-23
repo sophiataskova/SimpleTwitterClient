@@ -1,4 +1,4 @@
-package com.codepath.apps.simpletwitterclient;
+package com.codepath.apps.simpletwitterclient.activities;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,6 +9,11 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.codepath.apps.simpletwitterclient.EndlessScrollListener;
+import com.codepath.apps.simpletwitterclient.R;
+import com.codepath.apps.simpletwitterclient.TweetsArrayAdapter;
+import com.codepath.apps.simpletwitterclient.TwitterApplication;
+import com.codepath.apps.simpletwitterclient.TwitterClient;
 import com.codepath.apps.simpletwitterclient.models.Category;
 import com.codepath.apps.simpletwitterclient.models.Item;
 import com.codepath.apps.simpletwitterclient.models.Tweet;
@@ -66,12 +71,12 @@ public class TimeLineActivity extends ActionBarActivity implements TweetDialogFr
             }
         });
         populateTimeLine(0);
-        setupDatabase();
+//        setupDatabase();
     }
 
     private void setupDatabase() {
         mTweetsCategory = new Category();
-        mTweetsCategory.remoteId = 1;
+//        mTweetsCategory.remoteId = 1;
         mTweetsCategory.name = "Tweets";
         mTweetsCategory.save();
     }
@@ -88,15 +93,23 @@ public class TimeLineActivity extends ActionBarActivity implements TweetDialogFr
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
                 Log.d("Debug", response.toString());
-                if (mTweetItem != null) {
-                    for (Item item : mTweetItem.getAll(mTweetsCategory)) {
-                        tweetsArrayAdapter.addAll(Tweet.fromItem(item));
-                    }
-                }
+//                if (mTweetItem != null) {
+//                    ActiveAndroid.beginTransaction();
+//                    try {
+//                        for (Item item : mTweetItem.getAll(mTweetsCategory)) {
+//                            tweetsArrayAdapter.addAll(Tweet.fromItem(item));
+//                        }
+//                        ActiveAndroid.setTransactionSuccessful();
+//                    }
+//                    finally {
+//                        ActiveAndroid.endTransaction();
+//                    }
+//
+//                }
                 tweetsArrayAdapter.addAll(Tweet.fromJSONArray(response));
-                for (int i = 0; i < tweetsArrayAdapter.getCount(); i++) {
-                    persistItem(tweetsArrayAdapter.getItem(i));
-                }
+//                for (int i = 0; i < tweetsArrayAdapter.getCount(); i++) {
+//                    persistTweet(tweetsArrayAdapter.getItem(i));
+//                }
                 swipeContainer.setRefreshing(false);
             }
 
@@ -109,11 +122,12 @@ public class TimeLineActivity extends ActionBarActivity implements TweetDialogFr
         });
     }
 
-    private void persistItem(Tweet tweet) {
-        mTweetItem = new Item(1, tweet.getUser().getName());
+    private void persistTweet(Tweet tweet) {
+        mTweetItem = new Item();
                 //, tweet.getUser().getScreenName(), tweet.getUser().getProfilePicUrl(), tweet.getBody(), tweet.getCreatedAt(), tweet.getUid(), tweet.getUser().getUid(), mTweetsCategory);
 //        mTweetItem.remoteId = 1;
-//        mTweetItem.category = mTweetsCategory;
+        mTweetItem.category = mTweetsCategory;
+        mTweetItem.name = tweet.getCreatedAt();
 //        mTweetItem.name = tweet.getUser().getName();
 //        mTweetItem.screenName = tweet.getUser().getScreenName();
 //        mTweetItem.profileImage = tweet.getUser().getProfilePicUrl();

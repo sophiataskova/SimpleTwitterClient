@@ -9,5 +9,6 @@
     <string name="action_settings">Settings</string>
     <string name="compose">Compose Tweet</string>
     <string name="edit_empty_string_error">Please enter text</string>
+    <string name="title_activity_tweet_details">TweetDetailsActivity</string>
 
 </resources>

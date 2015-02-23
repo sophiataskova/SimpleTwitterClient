@@ -1,4 +1,4 @@
-package com.codepath.apps.simpletwitterclient;
+package com.codepath.apps.simpletwitterclient.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.codepath.apps.simpletwitterclient.R;
 
 public class TweetDialogFragment extends DialogFragment implements TextView.OnEditorActionListener, View.OnClickListener{
 //    public class TweetDialogFragment extends SupportBlurDialogFragment implements TextView.OnEditorActionListener, View.OnClickListener{
@@ -23,7 +25,6 @@ public class TweetDialogFragment extends DialogFragment implements TextView.OnEd
         TweetDialogFragment tweetDialogFragment = new TweetDialogFragment();
         Bundle args = new Bundle();
         args.putString("title", title);
-        args.putString("prefill", "Enter text");
         tweetDialogFragment.setArguments(args);
         return tweetDialogFragment;
     }

@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto" >
-    tools:context="com.codepath.apps.simpletwitterclient.TimeLineActivity">
+    tools:context="com.codepath.apps.simpletwitterclient.activities.TimeLineActivity">
     <item android:id="@+id/action_compose"
         android:icon="@drawable/ic_tweet_large"
         android:title="@string/compose"

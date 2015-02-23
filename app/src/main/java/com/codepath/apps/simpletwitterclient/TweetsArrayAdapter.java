@@ -1,6 +1,7 @@
 package com.codepath.apps.simpletwitterclient;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.codepath.apps.simpletwitterclient.activities.TweetDetailsActivity;
 import com.codepath.apps.simpletwitterclient.models.Tweet;
 import com.squareup.picasso.Picasso;
 
@@ -23,7 +25,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Tweet tweet = getItem(position);
+        final Tweet tweet = getItem(position);
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_tweet, parent, false);
         }
@@ -32,13 +34,24 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         TextView name = (TextView) convertView.findViewById(R.id.user_name);
         TextView body = (TextView) convertView.findViewById(R.id.body);
         TextView timeStamp = (TextView) convertView.findViewById(R.id.time_stamp);
+        if (userName != null) {
+            userName.setText("@" + tweet.getUser().getScreenName());
 
-        userName.setText("@"+tweet.getUser().getScreenName());
-        name.setText(tweet.getUser().getName());
-        body.setText(tweet.getBody());
-        profilePic.setImageResource(android.R.color.transparent);
-        timeStamp.setText(tweet.getCreatedAt());
-        Picasso.with(getContext()).load(tweet.getUser().getProfilePicUrl()).into(profilePic);
+            name.setText(tweet.getUser().getName());
+            body.setText(tweet.getBody());
+            profilePic.setImageResource(android.R.color.transparent);
+            timeStamp.setText(tweet.getCreatedAt());
+            Picasso.with(getContext()).load(tweet.getUser().getProfilePicUrl()).into(profilePic);
+        }
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), TweetDetailsActivity.class);
+                intent.putExtra("id", tweet.getUid());
+                getContext().startActivity(intent);
+            }
+        });
 
         return convertView;
     }
