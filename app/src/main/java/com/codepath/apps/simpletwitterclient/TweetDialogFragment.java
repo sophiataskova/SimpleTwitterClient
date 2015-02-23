@@ -1,6 +1,7 @@
 package com.codepath.apps.simpletwitterclient;
 
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class TweetDialogFragment extends android.support.v4.app.DialogFragment implements TextView.OnEditorActionListener, View.OnClickListener{
+public class TweetDialogFragment extends DialogFragment implements TextView.OnEditorActionListener, View.OnClickListener{
+//    public class TweetDialogFragment extends SupportBlurDialogFragment implements TextView.OnEditorActionListener, View.OnClickListener{
     private EditText mEditText;
     private Button mDoneButton;
 

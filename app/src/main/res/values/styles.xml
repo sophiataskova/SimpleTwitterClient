@@ -10,7 +10,21 @@
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
+
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+    <style name="CustomActionBarTheme"
+        parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/BlueActionBar</item>
 
+        <!-- Support library compatibility -->
+        <item name="actionBarStyle">@style/BlueActionBar</item>
+    </style>
+    <style name="BlueActionBar"
+        parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/actionbar_blue</item>
+
+        <!-- Support library compatibility -->
+        <item name="background">@color/actionbar_blue</item>
+    </style>
 </resources>

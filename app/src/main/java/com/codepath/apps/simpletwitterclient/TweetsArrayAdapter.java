@@ -29,10 +29,12 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         }
         ImageView profilePic = (ImageView) convertView.findViewById(R.id.profile_photo);
         TextView userName = (TextView) convertView.findViewById(R.id.user);
+        TextView name = (TextView) convertView.findViewById(R.id.user_name);
         TextView body = (TextView) convertView.findViewById(R.id.body);
         TextView timeStamp = (TextView) convertView.findViewById(R.id.time_stamp);
 
-        userName.setText(tweet.getUser().getScreenName());
+        userName.setText("@"+tweet.getUser().getScreenName());
+        name.setText(tweet.getUser().getName());
         body.setText(tweet.getBody());
         profilePic.setImageResource(android.R.color.transparent);
         timeStamp.setText(tweet.getCreatedAt());

@@ -79,6 +79,35 @@ public class Tweet {
             e.printStackTrace();
         }
 
-        return relativeDate;
+        return shortenRelativeDate(relativeDate);
+    }
+
+    public static String shortenRelativeDate(String longRelativeDate) {
+        String shortDate = longRelativeDate.replaceAll(" hour(s)? ago",
+                "h");
+        shortDate = shortDate.replaceAll(" day(s)? ago", "d");
+        shortDate = shortDate.replaceAll(" minute(s)? ago","m");
+        shortDate = shortDate.replaceAll(" second(s)? ago","s");
+        shortDate = shortDate.replaceAll("Yesterday", "1d");
+        shortDate = shortDate.replaceAll(", [0-9]{4}", "");
+        return shortDate;
+    }
+
+    public static Tweet fromItem(Item item) {
+        Tweet tweet = new Tweet();
+//        tweet.body = item.body;
+//        tweet.uid = item.localId;
+//        tweet.createdAt = item.timeStamp;
+
+//        User user1 = new User();
+//        user1.setName(item.name);
+//        user1.setUid(item.localUId);
+//        user1.setScreenName(item.screenName);
+//        user1.setProfilePicUrl(item.profileImage);
+
+//        tweet.user = user1;
+        tweet.body = item.name;
+
+        return tweet;
     }
 }

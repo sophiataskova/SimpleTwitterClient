@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.codepath.apps.simpletwitterclient.models.Category;
+import com.codepath.apps.simpletwitterclient.models.Item;
 import com.codepath.apps.simpletwitterclient.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -27,6 +29,8 @@ public class TimeLineActivity extends ActionBarActivity implements TweetDialogFr
     private SwipeRefreshLayout swipeContainer;
     private int mCurrentPage;
     private TweetDialogFragment mComposeDialog;
+    private Category mTweetsCategory;
+    private Item mTweetItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,14 @@ public class TimeLineActivity extends ActionBarActivity implements TweetDialogFr
             }
         });
         populateTimeLine(0);
+        setupDatabase();
+    }
+
+    private void setupDatabase() {
+        mTweetsCategory = new Category();
+        mTweetsCategory.remoteId = 1;
+        mTweetsCategory.name = "Tweets";
+        mTweetsCategory.save();
     }
 
     public void customLoadMoreDataFromApi(int offset) {
@@ -76,15 +88,39 @@ public class TimeLineActivity extends ActionBarActivity implements TweetDialogFr
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
                 Log.d("Debug", response.toString());
+                if (mTweetItem != null) {
+                    for (Item item : mTweetItem.getAll(mTweetsCategory)) {
+                        tweetsArrayAdapter.addAll(Tweet.fromItem(item));
+                    }
+                }
                 tweetsArrayAdapter.addAll(Tweet.fromJSONArray(response));
+                for (int i = 0; i < tweetsArrayAdapter.getCount(); i++) {
+                    persistItem(tweetsArrayAdapter.getItem(i));
+                }
                 swipeContainer.setRefreshing(false);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d("Debug", errorResponse.toString());
+                if (errorResponse != null) {
+                    Log.d("Debug", errorResponse.toString());
+                }
             }
         });
+    }
+
+    private void persistItem(Tweet tweet) {
+        mTweetItem = new Item(1, tweet.getUser().getName());
+                //, tweet.getUser().getScreenName(), tweet.getUser().getProfilePicUrl(), tweet.getBody(), tweet.getCreatedAt(), tweet.getUid(), tweet.getUser().getUid(), mTweetsCategory);
+//        mTweetItem.remoteId = 1;
+//        mTweetItem.category = mTweetsCategory;
+//        mTweetItem.name = tweet.getUser().getName();
+//        mTweetItem.screenName = tweet.getUser().getScreenName();
+//        mTweetItem.profileImage = tweet.getUser().getProfilePicUrl();
+//        mTweetItem.body = tweet.getBody();
+//        mTweetItem.timeStamp = tweet.getCreatedAt();
+//        mTweetItem.localId = tweet.getUid();
+        mTweetItem.save();
     }
 
 

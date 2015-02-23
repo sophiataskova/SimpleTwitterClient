@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto" >
     tools:context="com.codepath.apps.simpletwitterclient.TimeLineActivity">
     <item android:id="@+id/action_compose"
-        android:icon="@drawable/ic_tweet"
+        android:icon="@drawable/ic_tweet_large"
         android:title="@string/compose"
         app:showAsAction="ifRoom"/>
 </menu>
