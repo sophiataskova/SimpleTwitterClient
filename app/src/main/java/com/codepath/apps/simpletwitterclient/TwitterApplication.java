@@ -1,5 +1,6 @@
 package com.codepath.apps.simpletwitterclient;
 
+import android.app.Application;
 import android.content.Context;
 
 /*
@@ -11,7 +12,7 @@ import android.content.Context;
  *     // use client to send requests to API
  *
  */
-public class TwitterApplication extends com.activeandroid.app.Application {
+public class TwitterApplication extends Application {
 	private static Context context;
 
 	@Override

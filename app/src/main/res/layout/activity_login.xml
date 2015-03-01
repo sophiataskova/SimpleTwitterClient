@@ -6,9 +6,9 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:scaleType="centerCrop"
-        android:src="@drawable/scene_light_hands_concertmusic" />
+         />
     <!--https://cbshouston.files.wordpress.com/2013/03/137153916-1.jpg-->
     <Button
         android:layout_width="match_parent"

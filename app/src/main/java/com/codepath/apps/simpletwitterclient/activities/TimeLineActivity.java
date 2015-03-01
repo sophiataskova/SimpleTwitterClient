@@ -14,16 +14,20 @@ import com.codepath.apps.simpletwitterclient.R;
 import com.codepath.apps.simpletwitterclient.TweetsArrayAdapter;
 import com.codepath.apps.simpletwitterclient.TwitterApplication;
 import com.codepath.apps.simpletwitterclient.TwitterClient;
+import com.codepath.apps.simpletwitterclient.models.Author;
 import com.codepath.apps.simpletwitterclient.models.Category;
 import com.codepath.apps.simpletwitterclient.models.Item;
 import com.codepath.apps.simpletwitterclient.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TimeLineActivity extends ActionBarActivity implements TweetDialogFragment.ComposeTweetDialogListener {
 
@@ -71,14 +75,33 @@ public class TimeLineActivity extends ActionBarActivity implements TweetDialogFr
             }
         });
         populateTimeLine(0);
-//        setupDatabase();
+        testDB();
     }
 
-    private void setupDatabase() {
-        mTweetsCategory = new Category();
+    private void testDB() {
+
+        Author author = new Author("J.K. Rowling", 18);
+        author.save();
+
+        Select youngAuthorQuery = Select.from(Author.class)
+                .where(Condition.prop("age").lt(20));
+
+        List<Author> allAuthors = Author.listAll(Author.class);
+        Log.i("DEBUG","allAuthors are "+allAuthors);
+        List<Author> specificAuthors = youngAuthorQuery.list();
+        Log.i("DEBUG","specificAuthors are "+specificAuthors);
+//        mTweetsCategory = new Category();
 //        mTweetsCategory.remoteId = 1;
-        mTweetsCategory.name = "Tweets";
-        mTweetsCategory.save();
+//        mTweetsCategory.name = "Restaurants";
+//        mTweetsCategory.save();
+//
+//        mTweetItem = new Item();
+//        mTweetItem.remoteId = 1;
+//        mTweetItem.category = mTweetsCategory;
+//        mTweetItem.name = "Outback Steakhouse";
+//        mTweetItem.save();
+//        testQueryDB();
+
     }
 
     public void customLoadMoreDataFromApi(int offset) {
@@ -93,23 +116,7 @@ public class TimeLineActivity extends ActionBarActivity implements TweetDialogFr
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
                 Log.d("Debug", response.toString());
-//                if (mTweetItem != null) {
-//                    ActiveAndroid.beginTransaction();
-//                    try {
-//                        for (Item item : mTweetItem.getAll(mTweetsCategory)) {
-//                            tweetsArrayAdapter.addAll(Tweet.fromItem(item));
-//                        }
-//                        ActiveAndroid.setTransactionSuccessful();
-//                    }
-//                    finally {
-//                        ActiveAndroid.endTransaction();
-//                    }
-//
-//                }
                 tweetsArrayAdapter.addAll(Tweet.fromJSONArray(response));
-//                for (int i = 0; i < tweetsArrayAdapter.getCount(); i++) {
-//                    persistTweet(tweetsArrayAdapter.getItem(i));
-//                }
                 swipeContainer.setRefreshing(false);
             }
 
@@ -121,22 +128,6 @@ public class TimeLineActivity extends ActionBarActivity implements TweetDialogFr
             }
         });
     }
-
-    private void persistTweet(Tweet tweet) {
-        mTweetItem = new Item();
-                //, tweet.getUser().getScreenName(), tweet.getUser().getProfilePicUrl(), tweet.getBody(), tweet.getCreatedAt(), tweet.getUid(), tweet.getUser().getUid(), mTweetsCategory);
-//        mTweetItem.remoteId = 1;
-        mTweetItem.category = mTweetsCategory;
-        mTweetItem.name = tweet.getCreatedAt();
-//        mTweetItem.name = tweet.getUser().getName();
-//        mTweetItem.screenName = tweet.getUser().getScreenName();
-//        mTweetItem.profileImage = tweet.getUser().getProfilePicUrl();
-//        mTweetItem.body = tweet.getBody();
-//        mTweetItem.timeStamp = tweet.getCreatedAt();
-//        mTweetItem.localId = tweet.getUid();
-        mTweetItem.save();
-    }
-
 
     private void createTweet(String tweetText) {
         client.composeTweet(tweetText, new JsonHttpResponseHandler() {
@@ -181,15 +172,26 @@ public class TimeLineActivity extends ActionBarActivity implements TweetDialogFr
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_compose) {
-            showComposeDialog();
+//            showComposeDialog();
+            testQueryDB();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    private void testQueryDB() {
+        Log.i("DEBUG","about to print db contents");
+        List<Item> itemsL = mTweetItem.getAll(mTweetsCategory);
+        for (Item item: itemsL) {
+            Log.i("DEBUG","item 1 is "+ item.name);
+        }
+    }
+
     private void showComposeDialog() {
         mComposeDialog = TweetDialogFragment.newInstance(getResources().getString(R.string.compose));
         mComposeDialog.show(getSupportFragmentManager(), "fragment_compose_tweet");
     }
+
+
 }
