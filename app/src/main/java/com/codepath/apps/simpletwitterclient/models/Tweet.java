@@ -93,7 +93,7 @@ public class Tweet {
         return shortDate;
     }
 
-    public static Tweet fromItem(Item item) {
+    public static Tweet fromTweetModel(TweetModel tweetModel) {
         Tweet tweet = new Tweet();
 //        tweet.body = item.body;
 //        tweet.uid = item.localId;
@@ -106,7 +106,10 @@ public class Tweet {
 //        user1.setProfilePicUrl(item.profileImage);
 
 //        tweet.user = user1;
-        tweet.body = item.name;
+        tweet.body = tweetModel.body;
+        tweet.uid = tweetModel.uid;
+        tweet.createdAt = tweetModel.createdAt;
+//        tweet.user = User.fromUserModel(tweetModel.user);
 
         return tweet;
     }

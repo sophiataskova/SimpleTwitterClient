@@ -1,141 +1,137 @@
 package com.codepath.apps.simpletwitterclient.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import com.codepath.apps.simpletwitterclient.EndlessScrollListener;
+import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.simpletwitterclient.R;
-import com.codepath.apps.simpletwitterclient.TweetsArrayAdapter;
-import com.codepath.apps.simpletwitterclient.TwitterApplication;
 import com.codepath.apps.simpletwitterclient.TwitterClient;
-import com.codepath.apps.simpletwitterclient.models.Category;
-import com.codepath.apps.simpletwitterclient.models.Item;
+import com.codepath.apps.simpletwitterclient.fragments.HomeTimelineFragment;
+import com.codepath.apps.simpletwitterclient.fragments.MentionsTimelineFragment;
+import com.codepath.apps.simpletwitterclient.fragments.TweetsListFragment;
 import com.codepath.apps.simpletwitterclient.models.Tweet;
+import com.codepath.apps.simpletwitterclient.models.TweetModel;
+import com.codepath.apps.simpletwitterclient.models.User;
+import com.codepath.apps.simpletwitterclient.models.UserModel;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class TimeLineActivity extends ActionBarActivity implements TweetDialogFragment.ComposeTweetDialogListener {
 
-    private TwitterClient client;
-    private TweetsArrayAdapter tweetsArrayAdapter;
-    private ArrayList<Tweet> tweets;
-    private ListView lvTweets;
-    private SwipeRefreshLayout swipeContainer;
-    private int mCurrentPage;
+    private TweetsListFragment mTweetsListFragment;
     private TweetDialogFragment mComposeDialog;
-    private Category mTweetsCategory;
-    private Item mTweetItem;
+    private TwitterClient client;
+    private int mCurrentPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        SugarRecord.deleteAll(TweetModel.class);
+//        SugarRecord.deleteAll(UserModel.class);
         setContentView(R.layout.activity_time_line);
-        mCurrentPage = 1;
-        lvTweets = (ListView) findViewById(R.id.lv_tweets);
-        tweets = new ArrayList<>();
-        tweetsArrayAdapter = new TweetsArrayAdapter(this, tweets);
-        lvTweets.setAdapter(tweetsArrayAdapter);
-        client = TwitterApplication.getRestClient();
-        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+
+        ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
+        vpPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager()));
+
+        PagerSlidingTabStrip pagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        pagerSlidingTabStrip.setViewPager(vpPager);
+//        if (savedInstanceState == null) {
+//            mTweetsListFragment = (TweetsListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_timeline);
+//        }
+//        mCurrentPage = 1;
+//        lvTweets = (ListView) findViewById(R.id.lv_tweets);
+//        tweets = new ArrayList<>();
+//        tweetsArrayAdapter = new TweetsArrayAdapter(this, tweets);
+//        lvTweets.setAdapter(tweetsArrayAdapter);
+//        client = TwitterApplication.getRestClient();
+//        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                // Your code to refresh the list here.
-                // Make sure you call swipeContainer.setRefreshing(false)
-                // once the network request has completed successfully.
-                tweetsArrayAdapter.clear();
-                populateTimeLine(0);
+//        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                // Your code to refresh the list here.
+//                // Make sure you call swipeContainer.setRefreshing(false)
+//                // once the network request has completed successfully.
+//                mTweetsListFragment.clearAll();
+//                populateTimeLine(0);
+//            }
+//        });
+//        // Configure the refreshing colors
+//        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+//                android.R.color.holo_green_light,
+//                android.R.color.holo_orange_light,
+//                android.R.color.holo_red_light);
+//        lvTweets.setOnScrollListener(new EndlessScrollListener() {
+//            @Override
+//            public void onLoadMore(int page, int totalItemsCount) {
+//                customLoadMoreDataFromApi(page);
+//            }
+//        });
+//        populateTimeLine(0);
+    }
+
+    //    String name, int uid, String screenName, String profilePicUrl
+    private void persistTweets() {
+        Log.i("DEBUG", "testing tweets");
+        for (int i = 0; i < mTweetsListFragment.getTweetsArrayAdapter().getCount(); i++) {
+            Tweet tweet = mTweetsListFragment.getTweetsArrayAdapter().getItem(i);
+            UserModel newUserModel = new UserModel(tweet.getUser().getName(), tweet.getUser().getUid(), tweet.getUser().getScreenName(), tweet.getUser().getProfilePicUrl());
+            newUserModel.save();
+            TweetModel tweetModel = new TweetModel(tweet.getBody(), tweet.getUid(), newUserModel, tweet.getCreatedAt());
+            tweetModel.save();
+        }
+    }
+
+    private void retrieveTweetsFromDB() {
+        List<TweetModel> allTweetModels = TweetModel.listAll(TweetModel.class);
+
+        for (TweetModel tweetModel1 : allTweetModels) {
+            Log.i("DEBUG", "body is " + Tweet.fromTweetModel(tweetModel1).getBody());
+            if (tweetModel1.userModel != null) {
+                Log.i("DEBUG", "and user screen name is " + User.fromUserModel(tweetModel1.userModel).getScreenName());
             }
-        });
-        // Configure the refreshing colors
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-        lvTweets.setOnScrollListener(new EndlessScrollListener() {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount) {
-                customLoadMoreDataFromApi(page);
-            }
-        });
-        populateTimeLine(0);
-//        setupDatabase();
+        }
     }
 
-    private void setupDatabase() {
-        mTweetsCategory = new Category();
-//        mTweetsCategory.remoteId = 1;
-        mTweetsCategory.name = "Tweets";
-        mTweetsCategory.save();
-    }
 
-    public void customLoadMoreDataFromApi(int offset) {
-        mCurrentPage = offset + 1;
-        populateTimeLine(offset);
-
-    }
-
-    private void populateTimeLine(int page) {
-        client.getHomeTimeline(page, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                super.onSuccess(statusCode, headers, response);
-                Log.d("Debug", response.toString());
-//                if (mTweetItem != null) {
-//                    ActiveAndroid.beginTransaction();
-//                    try {
-//                        for (Item item : mTweetItem.getAll(mTweetsCategory)) {
-//                            tweetsArrayAdapter.addAll(Tweet.fromItem(item));
-//                        }
-//                        ActiveAndroid.setTransactionSuccessful();
-//                    }
-//                    finally {
-//                        ActiveAndroid.endTransaction();
-//                    }
+//    private void populateTimeLine(int page) {
+//        client.getHomeTimeline(page, new JsonHttpResponseHandler() {
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+//                super.onSuccess(statusCode, headers, response);
+//                Log.d("Debug", response.toString());
+//                mTweetsListFragment.getTweetsArrayAdapter().addAll(Tweet.fromJSONArray(response));
+////                persistTweets();
+//                mTweetsListFragment.getSwipeContainer().setRefreshing(false);
+//            }
 //
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+//                if (errorResponse != null) {
+//                    Log.d("Debug", errorResponse.toString());
 //                }
-                tweetsArrayAdapter.addAll(Tweet.fromJSONArray(response));
-//                for (int i = 0; i < tweetsArrayAdapter.getCount(); i++) {
-//                    persistTweet(tweetsArrayAdapter.getItem(i));
-//                }
-                swipeContainer.setRefreshing(false);
-            }
+//            }
+//        });
+//    }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                if (errorResponse != null) {
-                    Log.d("Debug", errorResponse.toString());
-                }
-            }
-        });
-    }
-
-    private void persistTweet(Tweet tweet) {
-        mTweetItem = new Item();
-                //, tweet.getUser().getScreenName(), tweet.getUser().getProfilePicUrl(), tweet.getBody(), tweet.getCreatedAt(), tweet.getUid(), tweet.getUser().getUid(), mTweetsCategory);
-//        mTweetItem.remoteId = 1;
-        mTweetItem.category = mTweetsCategory;
-        mTweetItem.name = tweet.getCreatedAt();
-//        mTweetItem.name = tweet.getUser().getName();
-//        mTweetItem.screenName = tweet.getUser().getScreenName();
-//        mTweetItem.profileImage = tweet.getUser().getProfilePicUrl();
-//        mTweetItem.body = tweet.getBody();
-//        mTweetItem.timeStamp = tweet.getCreatedAt();
-//        mTweetItem.localId = tweet.getUid();
-        mTweetItem.save();
-    }
+//    public void customLoadMoreDataFromApi(int offset) {
+//        mCurrentPage = offset + 1;
+//        populateTimeLine(offset);
+//
+//    }
 
 
     private void createTweet(String tweetText) {
@@ -167,8 +163,8 @@ public class TimeLineActivity extends ActionBarActivity implements TweetDialogFr
             Toast.makeText(this, getResources().getString(R.string.edit_empty_string_error), Toast.LENGTH_SHORT).show();
         } else {
             createTweet(inputText);
-            tweetsArrayAdapter.clear();
-            populateTimeLine(0);
+            mTweetsListFragment.clearAll();
+//            populateTimeLine(0);
         }
     }
 
@@ -183,13 +179,58 @@ public class TimeLineActivity extends ActionBarActivity implements TweetDialogFr
         if (id == R.id.action_compose) {
             showComposeDialog();
             return true;
+        } else if (id == R.id.action_profile) {
+            openProfile();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    private void openProfile() {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivity(intent);
+    }
+
+
     private void showComposeDialog() {
         mComposeDialog = TweetDialogFragment.newInstance(getResources().getString(R.string.compose));
         mComposeDialog.show(getSupportFragmentManager(), "fragment_compose_tweet");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        persistTweets();
+    }
+
+    public class TweetsPagerAdapter extends FragmentPagerAdapter {
+
+        private String tabTitles[] = {"Home", "Mentions"};
+
+        public TweetsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            if (position == 0) {
+                return new HomeTimelineFragment();
+            } else if (position == 1) {
+                return new MentionsTimelineFragment();
+            } else {
+                return null;
+            }
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return tabTitles[position];
+        }
+
+        @Override
+        public int getCount() {
+            return tabTitles.length;
+        }
     }
 }

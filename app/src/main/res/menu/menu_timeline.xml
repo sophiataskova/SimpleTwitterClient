@@ -6,4 +6,8 @@
         android:icon="@drawable/ic_tweet_large"
         android:title="@string/compose"
         app:showAsAction="ifRoom"/>
+    <item android:id="@+id/action_profile"
+        android:icon="@drawable/ic_profile"
+        android:title="@string/profile"
+        app:showAsAction="ifRoom"/>
 </menu>
