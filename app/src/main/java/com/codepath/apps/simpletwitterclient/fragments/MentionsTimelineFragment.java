@@ -35,9 +35,6 @@ public class MentionsTimelineFragment extends TweetsListFragment {
         super.onCreate(savedInstanceState);
         mCurrentPage = 1;
         client = TwitterApplication.getRestClient();
-
-
-
     }
 
     @Override

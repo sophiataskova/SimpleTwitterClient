@@ -44,7 +44,7 @@ public class ProfileActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         client = TwitterApplication.getRestClient();
-        if (username == "") {
+        if (username == null) {
             client.getUserInfo(new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -60,6 +60,10 @@ public class ProfileActivity extends ActionBarActivity {
                     user = User.fromJSON(response);
                     getSupportActionBar().setTitle("@" + user.getScreenName());
                     populateProfileHeader(user);
+                    UserTimelineFragment userTimelineFragment = UserTimelineFragment.newInstance(username);
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.fl_container, userTimelineFragment);
+                    ft.commit();
                 }
 
                 @Override

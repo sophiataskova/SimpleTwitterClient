@@ -77,10 +77,10 @@ public class TwitterClient extends OAuthBaseClient {
     }
 
     public void userLookup(String screenName, AsyncHttpResponseHandler handler)  {
-        String apiUrl = getApiUrl("users/lookup.json");
+        String apiUrl = getApiUrl("users/show.json");
         RequestParams params = new RequestParams();
         params.put("screen_name", screenName);
-        getClient().get(apiUrl, null, handler);
+        getClient().get(apiUrl, params, handler);
     }
 
 
