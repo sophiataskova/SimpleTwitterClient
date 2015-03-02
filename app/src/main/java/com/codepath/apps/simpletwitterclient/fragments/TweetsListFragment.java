@@ -30,22 +30,6 @@ public class TweetsListFragment extends Fragment {
         tweets = new ArrayList<>();
         tweetsArrayAdapter = new TweetsArrayAdapter(getActivity(), tweets);
 
-
-
-        // Setup refresh listener which triggers new data loading
-
-        // Configure the refreshing colors
-//        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-//                android.R.color.holo_green_light,
-//                android.R.color.holo_orange_light,
-//                android.R.color.holo_red_light);
-//        lvTweets.setOnScrollListener(new EndlessScrollListener() {
-//            @Override
-//            public void onLoadMore(int page, int totalItemsCount) {
-////                customLoadMoreDataFromApi(page);
-//            }
-//        });
-//        populateTimeLine(0);
     }
 
     @Override

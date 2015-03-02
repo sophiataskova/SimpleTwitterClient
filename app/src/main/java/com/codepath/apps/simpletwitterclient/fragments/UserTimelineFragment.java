@@ -44,7 +44,6 @@ public class UserTimelineFragment extends TweetsListFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_tweets_list, container, false);
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
-//        swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
         lvTweets = (ListView) v.findViewById(R.id.lv_tweets);
         lvTweets.setAdapter(getTweetsArrayAdapter());
         lvTweets.setOnScrollListener(new EndlessScrollListener() {

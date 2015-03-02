@@ -44,7 +44,7 @@ public class MentionsTimelineFragment extends TweetsListFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_tweets_list, container, false);
-//        swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
+        swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
         lvTweets = (ListView) v.findViewById(R.id.lv_tweets);
         lvTweets.setAdapter(getTweetsArrayAdapter());
         lvTweets.setOnScrollListener(new EndlessScrollListener() {
