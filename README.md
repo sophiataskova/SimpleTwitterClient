@@ -35,6 +35,9 @@ Since 3/1/15:
 - Profile view includes that user's timeline
 - User can infinitely paginate any of these timelines (home, mentions, user) by scrolling to the bottom
 
+Gif of new behavior is at ![part2](https://s3.amazonaws.com/uploads.hipchat.com/20599/752135/GCHgiSDsiWq5sWN/twitter_client_part_2.gif)
+*rather, gif of video of new behavior, since the emulator was way too slow
+
 
 
 ### To be continued...
