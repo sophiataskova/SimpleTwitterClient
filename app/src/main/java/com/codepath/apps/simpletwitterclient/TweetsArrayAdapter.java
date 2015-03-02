@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.codepath.apps.simpletwitterclient.activities.ProfileActivity;
 import com.codepath.apps.simpletwitterclient.activities.TweetDetailsActivity;
 import com.codepath.apps.simpletwitterclient.models.Tweet;
 import com.squareup.picasso.Picasso;
@@ -43,6 +44,15 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             timeStamp.setText(tweet.getCreatedAt());
             Picasso.with(getContext()).load(tweet.getUser().getProfilePicUrl()).into(profilePic);
         }
+
+        profilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ProfileActivity.class);
+                intent.putExtra("username", tweet.getUser().getScreenName());
+                getContext().startActivity(intent);
+            }
+        });
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override

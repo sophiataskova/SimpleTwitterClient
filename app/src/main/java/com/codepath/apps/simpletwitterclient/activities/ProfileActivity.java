@@ -26,7 +26,10 @@ public class ProfileActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        String username = getIntent().getStringExtra("username");
+
         client = TwitterApplication.getRestClient();
+        if (username == "") {
         client.getUserInfo(new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -35,6 +38,17 @@ public class ProfileActivity extends ActionBarActivity {
                 populateProfileHeader(user);
             }
         });
+        }
+         else {
+            client.getUserInfo(username, new JsonHttpResponseHandler(){
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    user = User.fromJSON(response);
+                    getSupportActionBar().setTitle("@" + user.getScreenName());
+                    populateProfileHeader(user);
+                }
+            });
+        }
         String screenName = getIntent().getStringExtra("screen_name");
         if (savedInstanceState == null) {
             UserTimelineFragment userTimelineFragment = UserTimelineFragment.newInstance("test screen name");

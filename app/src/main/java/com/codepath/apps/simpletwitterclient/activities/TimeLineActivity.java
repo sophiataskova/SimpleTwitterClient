@@ -122,7 +122,7 @@ public class TimeLineActivity extends ActionBarActivity implements TweetDialogFr
         return super.onOptionsItemSelected(item);
     }
 
-    private void openProfile() {
+    public void openProfile() {
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
     }
