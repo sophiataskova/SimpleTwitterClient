@@ -34,13 +34,10 @@ public class TimeLineActivity extends ActionBarActivity implements TweetDialogFr
     private TweetsListFragment mTweetsListFragment;
     private TweetDialogFragment mComposeDialog;
     private TwitterClient client;
-    private int mCurrentPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        SugarRecord.deleteAll(TweetModel.class);
-//        SugarRecord.deleteAll(UserModel.class);
         setContentView(R.layout.activity_time_line);
 
         ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
@@ -48,42 +45,8 @@ public class TimeLineActivity extends ActionBarActivity implements TweetDialogFr
 
         PagerSlidingTabStrip pagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         pagerSlidingTabStrip.setViewPager(vpPager);
-//        if (savedInstanceState == null) {
-//            mTweetsListFragment = (TweetsListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_timeline);
-//        }
-//        mCurrentPage = 1;
-//        lvTweets = (ListView) findViewById(R.id.lv_tweets);
-//        tweets = new ArrayList<>();
-//        tweetsArrayAdapter = new TweetsArrayAdapter(this, tweets);
-//        lvTweets.setAdapter(tweetsArrayAdapter);
-//        client = TwitterApplication.getRestClient();
-//        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
-        // Setup refresh listener which triggers new data loading
-//        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                // Your code to refresh the list here.
-//                // Make sure you call swipeContainer.setRefreshing(false)
-//                // once the network request has completed successfully.
-//                mTweetsListFragment.clearAll();
-//                populateTimeLine(0);
-//            }
-//        });
-//        // Configure the refreshing colors
-//        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-//                android.R.color.holo_green_light,
-//                android.R.color.holo_orange_light,
-//                android.R.color.holo_red_light);
-//        lvTweets.setOnScrollListener(new EndlessScrollListener() {
-//            @Override
-//            public void onLoadMore(int page, int totalItemsCount) {
-//                customLoadMoreDataFromApi(page);
-//            }
-//        });
-//        populateTimeLine(0);
     }
 
-    //    String name, int uid, String screenName, String profilePicUrl
     private void persistTweets() {
         Log.i("DEBUG", "testing tweets");
         for (int i = 0; i < mTweetsListFragment.getTweetsArrayAdapter().getCount(); i++) {
@@ -105,34 +68,6 @@ public class TimeLineActivity extends ActionBarActivity implements TweetDialogFr
             }
         }
     }
-
-
-//    private void populateTimeLine(int page) {
-//        client.getHomeTimeline(page, new JsonHttpResponseHandler() {
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-//                super.onSuccess(statusCode, headers, response);
-//                Log.d("Debug", response.toString());
-//                mTweetsListFragment.getTweetsArrayAdapter().addAll(Tweet.fromJSONArray(response));
-////                persistTweets();
-//                mTweetsListFragment.getSwipeContainer().setRefreshing(false);
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-//                if (errorResponse != null) {
-//                    Log.d("Debug", errorResponse.toString());
-//                }
-//            }
-//        });
-//    }
-
-//    public void customLoadMoreDataFromApi(int offset) {
-//        mCurrentPage = offset + 1;
-//        populateTimeLine(offset);
-//
-//    }
-
 
     private void createTweet(String tweetText) {
         client.composeTweet(tweetText, new JsonHttpResponseHandler() {
