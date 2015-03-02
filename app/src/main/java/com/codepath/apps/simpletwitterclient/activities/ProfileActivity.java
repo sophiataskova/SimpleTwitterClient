@@ -3,6 +3,7 @@ package com.codepath.apps.simpletwitterclient.activities;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -22,33 +23,15 @@ import org.json.JSONObject;
 public class ProfileActivity extends ActionBarActivity {
     TwitterClient client;
     User user;
+    String username;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        String username = getIntent().getStringExtra("username");
+        username = getIntent().getStringExtra("username");
 
-        client = TwitterApplication.getRestClient();
-        if (username == "") {
-        client.getUserInfo(new JsonHttpResponseHandler(){
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                user = User.fromJSON(response);
-                getSupportActionBar().setTitle("@" + user.getScreenName());
-                populateProfileHeader(user);
-            }
-        });
-        }
-         else {
-            client.getUserInfo(username, new JsonHttpResponseHandler(){
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    user = User.fromJSON(response);
-                    getSupportActionBar().setTitle("@" + user.getScreenName());
-                    populateProfileHeader(user);
-                }
-            });
-        }
+
         String screenName = getIntent().getStringExtra("screen_name");
         if (savedInstanceState == null) {
             UserTimelineFragment userTimelineFragment = UserTimelineFragment.newInstance("test screen name");
@@ -56,6 +39,37 @@ public class ProfileActivity extends ActionBarActivity {
             ft.replace(R.id.fl_container, userTimelineFragment);
             ft.commit();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        client = TwitterApplication.getRestClient();
+        if (username == "") {
+            client.getUserInfo(new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    user = User.fromJSON(response);
+                    getSupportActionBar().setTitle("@" + user.getScreenName());
+                    populateProfileHeader(user);
+                }
+            });
+        } else {
+            client.userLookup(username, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    user = User.fromJSON(response);
+                    getSupportActionBar().setTitle("@" + user.getScreenName());
+                    populateProfileHeader(user);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    Log.i("DEBUG", errorResponse.toString());
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                }
+            });
+        }
+        super.onResume();
     }
 
     private void populateProfileHeader(User user) {

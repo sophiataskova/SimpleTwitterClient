@@ -76,6 +76,13 @@ public class TwitterClient extends OAuthBaseClient {
         getClient().get(apiUrl, null, handler);
     }
 
+    public void userLookup(String screenName, AsyncHttpResponseHandler handler)  {
+        String apiUrl = getApiUrl("users/lookup.json");
+        RequestParams params = new RequestParams();
+        params.put("screen_name", screenName);
+        getClient().get(apiUrl, null, handler);
+    }
+
 
 
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
