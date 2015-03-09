@@ -22,9 +22,11 @@ public class EbayItem {
         try {
             String escapedImageURL = jsonObject.getString("galleryURL");
             escapedImageURL = new JSONArray(escapedImageURL).getString(0);
+            String escapedURL = jsonObject.getString("viewItemURL");
+            escapedURL = new JSONArray(escapedURL).getString(0);
             this.imageUrl = StringEscapeUtils.unescapeJava(escapedImageURL);
-            this.url = jsonObject.getString("viewItemURL");
-            this.title = jsonObject.getString("title");
+            this.url = StringEscapeUtils.unescapeJava(escapedURL);
+            this.title = (new JSONArray(jsonObject.getString("title"))).getString(0);
         } catch (JSONException e) {
             e.printStackTrace();
         }

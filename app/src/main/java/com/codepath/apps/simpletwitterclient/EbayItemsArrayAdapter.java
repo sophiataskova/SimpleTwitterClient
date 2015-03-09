@@ -33,9 +33,9 @@ public class EbayItemsArrayAdapter extends ArrayAdapter<EbayItem> {
         TextView body = (TextView) convertView.findViewById(R.id.body);
         TextView timeStamp = (TextView) convertView.findViewById(R.id.time_stamp);
         if (userName != null) {
-            userName.setText(ebayItem.getTitle());
+            name.setText(ebayItem.getTitle());
 
-            name.setText(ebayItem.getUrl());
+            body.setText(ebayItem.getUrl());
             profilePic.setImageResource(android.R.color.transparent);
             Picasso.with(getContext()).load(ebayItem.getImageUrl()).into(profilePic);
         }
