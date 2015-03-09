@@ -1,5 +1,8 @@
 package com.codepath.apps.simpletwitterclient.fragments;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,17 +12,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.codepath.apps.simpletwitterclient.EbayItemsArrayAdapter;
 import com.codepath.apps.simpletwitterclient.R;
-import com.codepath.apps.simpletwitterclient.TweetsArrayAdapter;
-import com.codepath.apps.simpletwitterclient.models.Tweet;
+import com.codepath.apps.simpletwitterclient.models.EbayItem;
 
 import java.util.ArrayList;
 
 
 public class TweetsListFragment extends Fragment {
 
-    protected TweetsArrayAdapter tweetsArrayAdapter;
-    private ArrayList<Tweet> tweets;
+    protected EbayItemsArrayAdapter mEbayItemsArrayAdapter;
+    private ArrayList<EbayItem> ebayItems;
     private ListView lvTweets;
     protected SwipeRefreshLayout swipeContainer;
 
@@ -27,8 +30,8 @@ public class TweetsListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        tweets = new ArrayList<>();
-        tweetsArrayAdapter = new TweetsArrayAdapter(getActivity(), tweets);
+        ebayItems = new ArrayList<>();
+        mEbayItemsArrayAdapter = new EbayItemsArrayAdapter(getActivity(), ebayItems);
 
     }
 
@@ -40,19 +43,26 @@ public class TweetsListFragment extends Fragment {
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
 
         lvTweets = (ListView) v.findViewById(R.id.lv_tweets);
-        lvTweets.setAdapter(tweetsArrayAdapter);
+        lvTweets.setAdapter(mEbayItemsArrayAdapter);
         return v;
     }
 
     public void clearAll() {
-        tweetsArrayAdapter.clear();
+        mEbayItemsArrayAdapter.clear();
     }
 
     public SwipeRefreshLayout getSwipeContainer() {
         return swipeContainer;
     }
 
-    public TweetsArrayAdapter getTweetsArrayAdapter() {
-        return tweetsArrayAdapter;
+    public EbayItemsArrayAdapter getmEbayItemsArrayAdapter() {
+        return mEbayItemsArrayAdapter;
+    }
+
+    public Boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
 }

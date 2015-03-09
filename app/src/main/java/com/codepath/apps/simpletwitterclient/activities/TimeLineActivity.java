@@ -21,7 +21,6 @@ import com.codepath.apps.simpletwitterclient.fragments.TweetsListFragment;
 import com.codepath.apps.simpletwitterclient.models.Tweet;
 import com.codepath.apps.simpletwitterclient.models.TweetModel;
 import com.codepath.apps.simpletwitterclient.models.User;
-import com.codepath.apps.simpletwitterclient.models.UserModel;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -47,16 +46,18 @@ public class TimeLineActivity extends ActionBarActivity implements TweetDialogFr
         pagerSlidingTabStrip.setViewPager(vpPager);
     }
 
-    private void persistTweets() {
-        Log.i("DEBUG", "testing tweets");
-        for (int i = 0; i < mTweetsListFragment.getTweetsArrayAdapter().getCount(); i++) {
-            Tweet tweet = mTweetsListFragment.getTweetsArrayAdapter().getItem(i);
-            UserModel newUserModel = new UserModel(tweet.getUser().getName(), tweet.getUser().getUid(), tweet.getUser().getScreenName(), tweet.getUser().getProfilePicUrl());
-            newUserModel.save();
-            TweetModel tweetModel = new TweetModel(tweet.getBody(), tweet.getUid(), newUserModel, tweet.getCreatedAt());
-            tweetModel.save();
-        }
-    }
+
+
+//    private void persistTweets() {
+//        Log.i("DEBUG", "testing tweets");
+//        for (int i = 0; i < mTweetsListFragment.getmEbayItemsArrayAdapter().getCount(); i++) {
+//            Tweet tweet = mTweetsListFragment.getmEbayItemsArrayAdapter().getItem(i);
+//            UserModel newUserModel = new UserModel(tweet.getUser().getName(), tweet.getUser().getUid(), tweet.getUser().getScreenName(), tweet.getUser().getProfilePicUrl());
+//            newUserModel.save();
+//            TweetModel tweetModel = new TweetModel(tweet.getBody(), tweet.getUid(), newUserModel, tweet.getCreatedAt());
+//            tweetModel.save();
+//        }
+//    }
 
     private void retrieveTweetsFromDB() {
         List<TweetModel> allTweetModels = TweetModel.listAll(TweetModel.class);

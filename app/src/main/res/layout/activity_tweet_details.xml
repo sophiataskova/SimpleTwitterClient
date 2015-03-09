@@ -4,6 +4,6 @@
     android:padding="5dp"
     tools:context="com.codepath.apps.simpletwitterclient.activities.TweetDetailsActivity">
 
-    <include layout="@layout/item_tweet"/>
+    <include layout="@layout/ebay_item"/>
 
 </RelativeLayout>
