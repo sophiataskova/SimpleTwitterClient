@@ -1,4 +1,4 @@
-package com.codepath.apps.simpletwitterclient.activities;
+package com.sophiataskova.apps.smartshoppinglist.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,14 +13,13 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
-import com.codepath.apps.simpletwitterclient.R;
-import com.codepath.apps.simpletwitterclient.TwitterClient;
-import com.codepath.apps.simpletwitterclient.fragments.HomeTimelineFragment;
-import com.codepath.apps.simpletwitterclient.fragments.MentionsTimelineFragment;
-import com.codepath.apps.simpletwitterclient.fragments.TweetsListFragment;
-import com.codepath.apps.simpletwitterclient.models.Tweet;
-import com.codepath.apps.simpletwitterclient.models.TweetModel;
-import com.codepath.apps.simpletwitterclient.models.User;
+import com.sophiataskova.apps.smartshoppinglist.TwitterClient;
+import com.sophiataskova.apps.smartshoppinglist.fragments.HomeTimelineFragment;
+import com.sophiataskova.apps.smartshoppinglist.fragments.MentionsTimelineFragment;
+import com.sophiataskova.apps.smartshoppinglist.fragments.TweetsListFragment;
+import com.sophiataskova.apps.smartshoppinglist.models.Tweet;
+import com.sophiataskova.apps.smartshoppinglist.models.TweetModel;
+import com.sophiataskova.apps.smartshoppinglist.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -37,12 +36,12 @@ public class TimeLineActivity extends ActionBarActivity implements TweetDialogFr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_time_line);
+        setContentView(com.sophiataskova.apps.smartshoppinglist.R.layout.activity_time_line);
 
-        ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
+        ViewPager vpPager = (ViewPager) findViewById(com.sophiataskova.apps.smartshoppinglist.R.id.viewpager);
         vpPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager()));
 
-        PagerSlidingTabStrip pagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        PagerSlidingTabStrip pagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(com.sophiataskova.apps.smartshoppinglist.R.id.tabs);
         pagerSlidingTabStrip.setViewPager(vpPager);
     }
 
@@ -89,14 +88,14 @@ public class TimeLineActivity extends ActionBarActivity implements TweetDialogFr
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_timeline, menu);
+        getMenuInflater().inflate(com.sophiataskova.apps.smartshoppinglist.R.menu.menu_timeline, menu);
         return true;
     }
 
     @Override
     public void onFinishEditDialog(String inputText) {
         if (inputText.equals("")) {
-            Toast.makeText(this, getResources().getString(R.string.edit_empty_string_error), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(com.sophiataskova.apps.smartshoppinglist.R.string.edit_empty_string_error), Toast.LENGTH_SHORT).show();
         } else {
             createTweet(inputText);
             mTweetsListFragment.clearAll();
@@ -112,10 +111,10 @@ public class TimeLineActivity extends ActionBarActivity implements TweetDialogFr
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_compose) {
+        if (id == com.sophiataskova.apps.smartshoppinglist.R.id.action_compose) {
             showComposeDialog();
             return true;
-        } else if (id == R.id.action_profile) {
+        } else if (id == com.sophiataskova.apps.smartshoppinglist.R.id.action_profile) {
             openProfile();
             return true;
         }
@@ -130,7 +129,7 @@ public class TimeLineActivity extends ActionBarActivity implements TweetDialogFr
 
 
     private void showComposeDialog() {
-        mComposeDialog = TweetDialogFragment.newInstance(getResources().getString(R.string.compose));
+        mComposeDialog = TweetDialogFragment.newInstance(getResources().getString(com.sophiataskova.apps.smartshoppinglist.R.string.compose));
         mComposeDialog.show(getSupportFragmentManager(), "fragment_compose_tweet");
     }
 

@@ -1,4 +1,4 @@
-package com.codepath.apps.simpletwitterclient;
+package com.sophiataskova.apps.smartshoppinglist;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.codepath.apps.simpletwitterclient.models.EbayItem;
+import com.sophiataskova.apps.smartshoppinglist.models.EbayItem;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class EbayItemsArrayAdapter extends ArrayAdapter<EbayItem> {
         TextView timeStamp = (TextView) convertView.findViewById(R.id.time_stamp);
         if (userName != null) {
             name.setText(ebayItem.getTitle());
-
+            timeStamp.setText("$"+ebayItem.getPrice());
             body.setText(ebayItem.getUrl());
             profilePic.setImageResource(android.R.color.transparent);
             Picasso.with(getContext()).load(ebayItem.getImageUrl()).into(profilePic);

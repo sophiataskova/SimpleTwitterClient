@@ -1,4 +1,4 @@
-package com.codepath.apps.simpletwitterclient;
+package com.sophiataskova.apps.smartshoppinglist;
 
 import android.widget.AbsListView;
 

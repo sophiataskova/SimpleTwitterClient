@@ -1,4 +1,4 @@
-package com.codepath.apps.simpletwitterclient.models;
+package com.sophiataskova.apps.smartshoppinglist.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -1,4 +1,4 @@
-package com.codepath.apps.simpletwitterclient.activities;
+package com.sophiataskova.apps.smartshoppinglist.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -9,11 +9,10 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.codepath.apps.simpletwitterclient.R;
-import com.codepath.apps.simpletwitterclient.TwitterApplication;
-import com.codepath.apps.simpletwitterclient.TwitterClient;
-import com.codepath.apps.simpletwitterclient.fragments.UserTimelineFragment;
-import com.codepath.apps.simpletwitterclient.models.User;
+import com.sophiataskova.apps.smartshoppinglist.TwitterApplication;
+import com.sophiataskova.apps.smartshoppinglist.TwitterClient;
+import com.sophiataskova.apps.smartshoppinglist.fragments.UserTimelineFragment;
+import com.sophiataskova.apps.smartshoppinglist.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 
@@ -28,7 +27,7 @@ public class ProfileActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(com.sophiataskova.apps.smartshoppinglist.R.layout.activity_profile);
         username = getIntent().getStringExtra("username");
 
 
@@ -36,7 +35,7 @@ public class ProfileActivity extends ActionBarActivity {
         if (savedInstanceState == null) {
             UserTimelineFragment userTimelineFragment = UserTimelineFragment.newInstance("test screen name");
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.fl_container, userTimelineFragment);
+            ft.replace(com.sophiataskova.apps.smartshoppinglist.R.id.fl_container, userTimelineFragment);
             ft.commit();
         }
     }
@@ -62,7 +61,7 @@ public class ProfileActivity extends ActionBarActivity {
                     populateProfileHeader(user);
                     UserTimelineFragment userTimelineFragment = UserTimelineFragment.newInstance(username);
                     FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                    ft.replace(R.id.fl_container, userTimelineFragment);
+                    ft.replace(com.sophiataskova.apps.smartshoppinglist.R.id.fl_container, userTimelineFragment);
                     ft.commit();
                 }
 
@@ -77,11 +76,11 @@ public class ProfileActivity extends ActionBarActivity {
     }
 
     private void populateProfileHeader(User user) {
-        TextView tvName = (TextView) findViewById(R.id.tv_name);
-        TextView tvTagline = (TextView) findViewById(R.id.tv_tagline);
-        TextView tvFollowers = (TextView) findViewById(R.id.tv_followers);
-        TextView tvFollowing = (TextView) findViewById(R.id.tv_following);
-        ImageView ivProfileImage = (ImageView) findViewById(R.id.iv_profile_image);
+        TextView tvName = (TextView) findViewById(com.sophiataskova.apps.smartshoppinglist.R.id.tv_name);
+        TextView tvTagline = (TextView) findViewById(com.sophiataskova.apps.smartshoppinglist.R.id.tv_tagline);
+        TextView tvFollowers = (TextView) findViewById(com.sophiataskova.apps.smartshoppinglist.R.id.tv_followers);
+        TextView tvFollowing = (TextView) findViewById(com.sophiataskova.apps.smartshoppinglist.R.id.tv_following);
+        ImageView ivProfileImage = (ImageView) findViewById(com.sophiataskova.apps.smartshoppinglist.R.id.iv_profile_image);
         tvName.setText(user.getName());
         tvTagline.setText(user.getTagLine());
         tvFollowers.setText(user.getFollowersCount() + " followers");
@@ -93,7 +92,7 @@ public class ProfileActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_profile, menu);
+        getMenuInflater().inflate(com.sophiataskova.apps.smartshoppinglist.R.menu.menu_profile, menu);
         return true;
     }
 
@@ -105,7 +104,7 @@ public class ProfileActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == com.sophiataskova.apps.smartshoppinglist.R.id.action_settings) {
             return true;
         }
 

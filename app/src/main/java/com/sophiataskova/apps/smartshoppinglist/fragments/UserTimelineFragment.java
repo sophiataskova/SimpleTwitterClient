@@ -1,4 +1,4 @@
-package com.codepath.apps.simpletwitterclient.fragments;
+package com.sophiataskova.apps.smartshoppinglist.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,13 +11,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.codepath.apps.simpletwitterclient.EbayRequests;
-import com.codepath.apps.simpletwitterclient.EndlessScrollListener;
-import com.codepath.apps.simpletwitterclient.R;
-import com.codepath.apps.simpletwitterclient.TwitterApplication;
-import com.codepath.apps.simpletwitterclient.TwitterClient;
-import com.codepath.apps.simpletwitterclient.models.EbayItem;
-import com.codepath.apps.simpletwitterclient.models.Tweet;
+import com.sophiataskova.apps.smartshoppinglist.EbayRequests;
+import com.sophiataskova.apps.smartshoppinglist.EndlessScrollListener;
+import com.sophiataskova.apps.smartshoppinglist.TwitterApplication;
+import com.sophiataskova.apps.smartshoppinglist.TwitterClient;
+import com.sophiataskova.apps.smartshoppinglist.models.EbayItem;
+import com.sophiataskova.apps.smartshoppinglist.models.Tweet;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -49,9 +48,9 @@ public class UserTimelineFragment extends TweetsListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View v = inflater.inflate(R.layout.fragment_tweets_list, container, false);
-        swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
-        lvTweets = (ListView) v.findViewById(R.id.lv_tweets);
+        View v = inflater.inflate(com.sophiataskova.apps.smartshoppinglist.R.layout.fragment_tweets_list, container, false);
+        swipeContainer = (SwipeRefreshLayout) v.findViewById(com.sophiataskova.apps.smartshoppinglist.R.id.swipeContainer);
+        lvTweets = (ListView) v.findViewById(com.sophiataskova.apps.smartshoppinglist.R.id.lv_tweets);
         lvTweets.setAdapter(getmEbayItemsArrayAdapter());
         lvTweets.setOnScrollListener(new EndlessScrollListener() {
             @Override

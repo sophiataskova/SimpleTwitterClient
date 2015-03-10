@@ -1,4 +1,4 @@
-package com.codepath.apps.simpletwitterclient.models;
+package com.sophiataskova.apps.smartshoppinglist.models;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
@@ -18,6 +18,8 @@ public class EbayItem {
     private String imageUrl;
     private String title;
 
+    private double price;
+
     public EbayItem(JSONObject jsonObject){
         try {
             String escapedImageURL = jsonObject.getString("galleryURL");
@@ -27,6 +29,7 @@ public class EbayItem {
             this.imageUrl = StringEscapeUtils.unescapeJava(escapedImageURL);
             this.url = StringEscapeUtils.unescapeJava(escapedURL);
             this.title = (new JSONArray(jsonObject.getString("title"))).getString(0);
+            this.price = Double.parseDouble(jsonObject.getJSONArray("sellingStatus").getJSONObject(0).getJSONArray("currentPrice").getJSONObject(0).getString("__value__"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -55,6 +58,10 @@ public class EbayItem {
 
     public String getTitle() {
         return title;
+    }
+
+    public double getPrice() {
+        return price;
     }
 
     public static ArrayList<EbayItem> fromJsonArray(JSONArray jsonArray) {

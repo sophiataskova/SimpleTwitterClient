@@ -1,4 +1,4 @@
-package com.codepath.apps.simpletwitterclient.fragments;
+package com.sophiataskova.apps.smartshoppinglist.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,13 +11,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.codepath.apps.simpletwitterclient.EbayRequests;
-import com.codepath.apps.simpletwitterclient.EndlessScrollListener;
-import com.codepath.apps.simpletwitterclient.R;
-import com.codepath.apps.simpletwitterclient.TwitterApplication;
-import com.codepath.apps.simpletwitterclient.TwitterClient;
-import com.codepath.apps.simpletwitterclient.models.EbayItem;
-import com.codepath.apps.simpletwitterclient.models.Tweet;
+import com.sophiataskova.apps.smartshoppinglist.EbayRequests;
+import com.sophiataskova.apps.smartshoppinglist.EndlessScrollListener;
+import com.sophiataskova.apps.smartshoppinglist.R;
+import com.sophiataskova.apps.smartshoppinglist.TwitterApplication;
+import com.sophiataskova.apps.smartshoppinglist.TwitterClient;
+import com.sophiataskova.apps.smartshoppinglist.models.EbayItem;
+import com.sophiataskova.apps.smartshoppinglist.models.Tweet;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -28,10 +28,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class MentionsTimelineFragment extends TweetsListFragment {
+public class HomeTimelineFragment extends TweetsListFragment {
 
     private TwitterClient client;
-//    private SwipeRefreshLayout swipeContainer;
+
     private ArrayList<Tweet> tweets;
     private ListView lvTweets;
     private int mCurrentPage;
@@ -78,12 +78,12 @@ public class MentionsTimelineFragment extends TweetsListFragment {
     }
 
 //    private void populateTimeLine(int page) {
-//        client.getMentionsTimeline(page, new JsonHttpResponseHandler() {
+//        client.getHomeTimeline(page, new JsonHttpResponseHandler() {
 //            @Override
 //            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
 //                super.onSuccess(statusCode, headers, response);
 //                Log.d("Debug", response.toString());
-//                getmEbayItemsArrayAdapter().addAll(EbayItem.fromJSONArray(response));
+//                getTweetsArrayAdapter().addAll(Tweet.fromJSONArray(response));
 ////                persistTweets();
 //                swipeContainer.setRefreshing(false);
 //            }
@@ -102,6 +102,8 @@ public class MentionsTimelineFragment extends TweetsListFragment {
         makeRequest(offset);
 
     }
+
+
 
     public void makeRequest(final int offset) {
         mCurrentPage = offset;
@@ -127,7 +129,7 @@ public class MentionsTimelineFragment extends TweetsListFragment {
 //                            imageResults.clear();
 //                        }
 
-                        ((ArrayAdapter) getmEbayItemsArrayAdapter()).addAll(EbayItem.fromJsonArray(ebayItemsResult));
+                                ((ArrayAdapter) getmEbayItemsArrayAdapter()).addAll(EbayItem.fromJsonArray(ebayItemsResult));
                         if (mEbayItemsArrayAdapter.isEmpty()) {
 //                            findViewById(R.id.no_results).setVisibility(View.VISIBLE);
 //                            gvResults.setVisibility(View.GONE);
@@ -148,5 +150,4 @@ public class MentionsTimelineFragment extends TweetsListFragment {
             Toast.makeText(getActivity(), "No network connectivity", Toast.LENGTH_SHORT).show();
         }
     }
-
 }

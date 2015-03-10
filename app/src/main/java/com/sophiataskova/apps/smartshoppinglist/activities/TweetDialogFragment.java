@@ -1,4 +1,4 @@
-package com.codepath.apps.simpletwitterclient.activities;
+package com.sophiataskova.apps.smartshoppinglist.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.codepath.apps.simpletwitterclient.R;
 
 public class TweetDialogFragment extends DialogFragment implements TextView.OnEditorActionListener, View.OnClickListener{
 //    public class TweetDialogFragment extends SupportBlurDialogFragment implements TextView.OnEditorActionListener, View.OnClickListener{
@@ -37,10 +35,10 @@ public class TweetDialogFragment extends DialogFragment implements TextView.OnEd
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.compose_dialog, container, false);
-        mEditText = (EditText) v.findViewById(R.id.txt_new_content);
-        mDoneButton = (Button) v.findViewById(R.id.done_button);
-        String title = getArguments().getString("title", getResources().getString(R.string.compose));
+        View v = inflater.inflate(com.sophiataskova.apps.smartshoppinglist.R.layout.compose_dialog, container, false);
+        mEditText = (EditText) v.findViewById(com.sophiataskova.apps.smartshoppinglist.R.id.txt_new_content);
+        mDoneButton = (Button) v.findViewById(com.sophiataskova.apps.smartshoppinglist.R.id.done_button);
+        String title = getArguments().getString("title", getResources().getString(com.sophiataskova.apps.smartshoppinglist.R.string.compose));
         String prefill = getArguments().getString("prefill", "");
 
         getDialog().setTitle(title);

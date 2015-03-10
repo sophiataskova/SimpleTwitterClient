@@ -1,4 +1,4 @@
-package com.codepath.apps.simpletwitterclient.models;
+package com.sophiataskova.apps.smartshoppinglist.models;
 
 import android.text.format.DateUtils;
 

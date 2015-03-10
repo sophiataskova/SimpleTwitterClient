@@ -54,7 +54,7 @@
             android:textColor="#B7C1C9"
             app:typeface="roboto_light"
             android:layout_height="wrap_content"
-            android:text="2h ago"/>
+            android:text="$"/>
         </LinearLayout>
     <com.devspark.robototextview.widget.RobotoTextView
         android:id="@+id/body"

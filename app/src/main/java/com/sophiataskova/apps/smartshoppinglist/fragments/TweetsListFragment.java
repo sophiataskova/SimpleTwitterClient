@@ -1,4 +1,4 @@
-package com.codepath.apps.simpletwitterclient.fragments;
+package com.sophiataskova.apps.smartshoppinglist.fragments;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -12,9 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.codepath.apps.simpletwitterclient.EbayItemsArrayAdapter;
-import com.codepath.apps.simpletwitterclient.R;
-import com.codepath.apps.simpletwitterclient.models.EbayItem;
+import com.sophiataskova.apps.smartshoppinglist.EbayItemsArrayAdapter;
+import com.sophiataskova.apps.smartshoppinglist.models.EbayItem;
 
 import java.util.ArrayList;
 
@@ -38,11 +37,11 @@ public class TweetsListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_tweets_list, container, false);
+        View v = inflater.inflate(com.sophiataskova.apps.smartshoppinglist.R.layout.fragment_tweets_list, container, false);
 //        swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
-        swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
+        swipeContainer = (SwipeRefreshLayout) v.findViewById(com.sophiataskova.apps.smartshoppinglist.R.id.swipeContainer);
 
-        lvTweets = (ListView) v.findViewById(R.id.lv_tweets);
+        lvTweets = (ListView) v.findViewById(com.sophiataskova.apps.smartshoppinglist.R.id.lv_tweets);
         lvTweets.setAdapter(mEbayItemsArrayAdapter);
         return v;
     }
